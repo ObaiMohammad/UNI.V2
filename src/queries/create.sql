@@ -17,9 +17,15 @@ create table users
 );
 
 alter table users
-    alter column guid drop default,
-    alter guid TYPE UUID USING  uuid_generate_v4(),
-    alter guid SET DEFAULT uuid_generate_v4();
+    alter column id drop default,
+
+    alter id TYPE UUID USING  uuid_generate_v4(),
+    alter id SET DEFAULT uuid_generate_v4();
+
+alter table users
+
+    alter id TYPE varchar;
+
 
 alter table users
     alter guid SET DEFAULT uuid_generate_v4();
