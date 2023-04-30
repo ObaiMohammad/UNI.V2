@@ -10,15 +10,18 @@ create table users
     first_name varchar   not null,
     last_name  varchar   not null,
     email      varchar   not null,
-    guid       varchar   not null,
+    guid       uuid DEFAULT uuid_generate_v4 (),
     role       varchar   not null,
-    updatable  TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL
+    created_at  TIMESTAMP  default now(),
+    updated_at TIMESTAMP default now()
 );
 
 alter table users
     alter column guid drop default,
     alter guid TYPE UUID USING  uuid_generate_v4(),
+    alter guid SET DEFAULT uuid_generate_v4();
+
+alter table users
     alter guid SET DEFAULT uuid_generate_v4();
 
 drop table users;

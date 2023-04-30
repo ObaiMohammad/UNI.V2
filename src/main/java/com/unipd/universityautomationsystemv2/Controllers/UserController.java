@@ -38,16 +38,18 @@ public class UserController {
         return service.create(user);
     }
 
-//    @PostMapping
-//    public User [] addMultiableUser(@RequestBody UserModel [] user) {
-//       List <User> users = new ArrayList<User>();
+    @PostMapping("/multi")
+    public User [] addMultiableUser(@RequestBody UserModel [] user) {
+       User [] users = new User[user.length];
 //        for (UserModel u : user)
 //        {
 //          users.add(service.create(u))  ;
 //        }
-//
-//        return (User[]) users.toArray();
-//    }
+        for (int i =1; i < users.length ;i++){
+            users [i] = (service.create(user[0]));
+        }
+        return  users ;
+    }
 
 
 
@@ -65,6 +67,12 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
         service.deleteById(id);
+        return ResponseEntity.ok("Deleted successfully");
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteAllUsers(){
+        service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
     }
 

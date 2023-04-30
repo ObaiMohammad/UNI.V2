@@ -4,6 +4,7 @@ package com.unipd.universityautomationsystemv2.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -18,9 +19,10 @@ public class User extends BaseEntity{
 
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter()
-    private int id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid2")
+    private Long id;
 
     @Column(name = "first_name",nullable = false)
     private  String firstName;
@@ -32,7 +34,9 @@ public class User extends BaseEntity{
     private  String email;
 
     @Column
-    private UUID guid;
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid2")
+    private UUID guid ;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
