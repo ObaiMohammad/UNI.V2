@@ -16,6 +16,7 @@ create table users
     updated_at TIMESTAMP default now()
 );
 
+---------------------
 drop table users;
 
 alter table users
@@ -34,8 +35,33 @@ alter table users
 
 drop table users;
 
-drop database unipd;
 
 insert into users (first_name, last_name, email,role)
 values ('Obai', 'Mohammad', 'Obai@gmail.com','STUDENT');
 
+--------------
+
+CREATE TABLE courses
+(
+    id         serial PRIMARY KEY,
+    title      VARCHAR(50) NOT NULL,
+    credits    int         NOT NULL,
+    created_at  TIMESTAMP  default now(),
+    updated_at TIMESTAMP default now()
+);
+
+------------
+
+CREATE TABLE course_student
+(
+    student_id INT,
+    course_id  INT,
+    CONSTRAINT fk_student
+        FOREIGN KEY (student_id)
+            REFERENCES users (id) on delete cascade,
+    CONSTRAINT fk_course
+        FOREIGN KEY (course_id)
+            REFERENCES courses (id) on delete cascade,
+    constraint fk_unique unique (student_id,course_id)
+);
+-----------------

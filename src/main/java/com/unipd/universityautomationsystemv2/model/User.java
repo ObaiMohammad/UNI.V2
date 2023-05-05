@@ -1,11 +1,8 @@
-
-
 package com.unipd.universityautomationsystemv2.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -41,5 +38,7 @@ public class User extends BaseEntity{
     @Column(nullable = false)
     private Role role;
 
+    @ManyToMany(mappedBy = "course_student")
+    Set<Course> courses;
 
 }

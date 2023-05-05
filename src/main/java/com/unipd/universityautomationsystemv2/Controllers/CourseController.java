@@ -1,63 +1,49 @@
 package com.unipd.universityautomationsystemv2.Controllers;
 
 import com.github.fge.jsonpatch.JsonPatch;
+import com.unipd.universityautomationsystemv2.Services.CourseServices;
 import com.unipd.universityautomationsystemv2.Services.UserServices;
+import com.unipd.universityautomationsystemv2.model.Course;
+import com.unipd.universityautomationsystemv2.model.CourseModel;
 import com.unipd.universityautomationsystemv2.model.User;
 import com.unipd.universityautomationsystemv2.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/users")
-public class UserController {
+@RequestMapping("/api/v2/courses")
+public class CourseController {
 
-    private final UserServices service;
+    private final CourseServices service;
 
     @Autowired
-    public UserController(UserServices service) {
+    public CourseController(CourseServices service) {
         this.service = service;
     }
 
-    @GetMapping
-    public List<User> getAllUsers(){
-        return service.findAll();
-    }
-
     @PostMapping
-    public User addUser(@RequestBody UserModel user) {
-        return service.create(user);
+    public Course addCourse (@RequestBody CourseModel courseModel){
+        return service.create(courseModel);
     }
 
     @PostMapping("/multi")
-    public User [] addMultiableUser(@RequestBody UserModel [] userModel) {
-       User [] users = new User[userModel.length];
-//        for (UserModel u : user)
-//        {
-//          users.add(service.create(u))  ;
-//        }
-        for (int i =0; i < users.length ;i++){
-            users [i] = (service.create(userModel[i]));
+    public Course[] addMultiableUser(@RequestBody CourseModel[] courseModel) {
+        Course [] courses = new Course[courseModel.length];
+
+        for (int i =0; i < courses.length ;i++){
+            courses [i] = (service.create(courseModel[i]));
         }
-        return  users ;
+        return  courses ;
     }
 
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<Course> getUserById (@PathVariable Long id){
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserModel user){
-;
-        return ResponseEntity.ok(service.updateOne(id,user));
-    }
-
     @PatchMapping ("/{id}")
-    public ResponseEntity<User> updateUser (@PathVariable long id, @RequestBody JsonPatch patch){
+    public ResponseEntity<Course> updateCourse (@PathVariable long id, @RequestBody JsonPatch patch){
         return ResponseEntity.ok(service.patchOne(id,patch));
     }
 
@@ -72,6 +58,5 @@ public class UserController {
         service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
     }
-
 
 }
