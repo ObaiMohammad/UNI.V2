@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v2/courses")
 public class CourseController {
@@ -38,8 +40,13 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getUserById (@PathVariable Long id){
+    public ResponseEntity<Course> getCourseById (@PathVariable Long id){
         return ResponseEntity.ok(service.findById(id));
+    }
+
+    @GetMapping
+    public List<Course> getAllCourseBy (){
+        return service.findAll();
     }
 
     @PatchMapping ("/{id}")
@@ -48,13 +55,13 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.ok("Deleted successfully");
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteAllUsers(){
+    public ResponseEntity<String> deleteAllCourses(){
         service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
     }

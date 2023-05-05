@@ -2,15 +2,17 @@ package com.unipd.universityautomationsystemv2.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table (name = "course")
+@Table (name = "courses")
 public class Course extends BaseEntity{
 
     @Id
@@ -18,17 +20,16 @@ public class Course extends BaseEntity{
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @Column(nullable = false)
-    private int credit;
+    private int credits;
 
     @ManyToMany
     @JoinTable(
             name = "course_student",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns  = @JoinColumn(name = "student_id"))
-    Set<User> Users;
-
+    Set<User> UsersMap;
 
 }

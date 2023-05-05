@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourseModel {
 
-    private  String name;
-    private  int credit;
+    private  String title;
+    private  int credits;
 
 }

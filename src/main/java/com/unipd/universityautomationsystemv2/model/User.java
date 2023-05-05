@@ -38,7 +38,7 @@ public class User extends BaseEntity{
     @Column(nullable = false)
     private Role role;
 
-    @ManyToMany(mappedBy = "course_student")
-    Set<Course> courses;
+    @ManyToMany(mappedBy = "UsersMap")
+    Set<Course> coursesMap;
 
 }

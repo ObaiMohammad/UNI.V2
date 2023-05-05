@@ -27,8 +27,8 @@ public class CourseServices {
 
     public Course create (CourseModel course){
         var newCourse = Course.builder()
-                .name(course.getName())
-                .credit(course.getCredit())
+                .title(course.getTitle())
+                .credits(course.getCredits())
                 .build();
         return repository.save(newCourse);
     }
