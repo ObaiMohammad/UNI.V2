@@ -16,6 +16,8 @@ create table users
     updated_at TIMESTAMP default now()
 );
 
+drop table users;
+
 alter table users
     alter column id drop default,
 
@@ -36,3 +38,4 @@ drop database unipd;
 
 insert into users (first_name, last_name, email,role)
 values ('Obai', 'Mohammad', 'Obai@gmail.com','STUDENT');
+

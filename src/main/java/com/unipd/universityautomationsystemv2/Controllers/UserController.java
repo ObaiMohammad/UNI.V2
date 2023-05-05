@@ -39,14 +39,14 @@ public class UserController {
     }
 
     @PostMapping("/multi")
-    public User [] addMultiableUser(@RequestBody UserModel [] user) {
-       User [] users = new User[user.length];
+    public User [] addMultiableUser(@RequestBody UserModel [] userModel) {
+       User [] users = new User[userModel.length];
 //        for (UserModel u : user)
 //        {
 //          users.add(service.create(u))  ;
 //        }
-        for (int i =1; i < users.length ;i++){
-            users [i] = (service.create(user[0]));
+        for (int i =0; i < users.length ;i++){
+            users [i] = (service.create(userModel[i]));
         }
         return  users ;
     }
