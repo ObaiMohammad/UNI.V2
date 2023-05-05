@@ -44,16 +44,18 @@ public class UserServices {
     }
 
     public User patchOne(long id, JsonPatch patch) {
-        var product = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("user not exist with id :" + id));
-        var productPatched = applyPatchToUser(patch, product);
+        var user = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("user not exist with id :" + id));
+        var productPatched = applyPatchToUser(patch, user);
         return repository.save(productPatched);
     }
 
-    private User applyPatchToUser(JsonPatch patch, User product) {
+    private User applyPatchToUser(JsonPatch patch, User user) {
         try {
             var objectMapper = new ObjectMapper();
-            JsonNode patched = patch.apply(objectMapper.convertValue(product, JsonNode.class));
-            return objectMapper.treeToValue(patched, User.class);
+            JsonNode userToJson = objectMapper.convertValue(user, JsonNode.class);
+            JsonNode patched = patch.apply(userToJson);
+            User jsonToUser = objectMapper.treeToValue(patched, User.class);
+            return jsonToUser;
         } catch (JsonPatchException | JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -77,8 +79,7 @@ public class UserServices {
         oldUSer.setRole(user.getRole());
         oldUSer.setEmail(user.getEmail());
 
-        User updatedUser = repository.save(oldUSer);
-        return updatedUser;
+        return repository.save(oldUSer);
     }
 
 }
