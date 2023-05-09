@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CourseServices {
@@ -71,5 +72,11 @@ public class CourseServices {
         repository.deleteAll();
         return true;
     }
+
+    public Set<User> getEnrolledStudents (Long courseId) {
+        Course course = findById(courseId);
+        return course.getUsersMap();
+    }
+
 
 }

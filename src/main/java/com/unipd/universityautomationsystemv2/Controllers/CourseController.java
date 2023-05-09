@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v2/courses")
@@ -64,6 +65,10 @@ public class CourseController {
     public ResponseEntity<String> deleteAllCourses(){
         service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
+    }
+    @GetMapping ("/{courseId}")
+    public Set<User> getEnrolledCourses (@PathVariable long courseId){
+        return service.getEnrolledStudents(courseId);
     }
 
 }

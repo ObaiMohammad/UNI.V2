@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import com.unipd.universityautomationsystemv2.model.Course;
+import com.unipd.universityautomationsystemv2.model.Role;
 import com.unipd.universityautomationsystemv2.model.User;
 import com.unipd.universityautomationsystemv2.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServices {
@@ -81,5 +84,20 @@ public class UserServices {
 
         return repository.save(oldUSer);
     }
+
+
+    public void enrollStudent (Long courseId, Long studentId){
+       User student =  findById(studentId);
+       if (student.getRole() == Role.STUDENT){
+           repository.enrollStudent(courseId,studentId);
+       }
+       else throw new EntityNotFoundException ("User is not a student");
+    }
+
+    public Set<Course> getEnrolledCourses (Long studentId) {
+        User student = findById(studentId);
+        return student.getCoursesMap();
+    }
+
 
 }

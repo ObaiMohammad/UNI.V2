@@ -2,12 +2,16 @@ package com.unipd.universityautomationsystemv2.Controllers;
 
 import com.github.fge.jsonpatch.JsonPatch;
 import com.unipd.universityautomationsystemv2.Services.UserServices;
+import com.unipd.universityautomationsystemv2.model.Course;
 import com.unipd.universityautomationsystemv2.model.User;
 import com.unipd.universityautomationsystemv2.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v2/users")
@@ -72,6 +76,18 @@ public class UserController {
         service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
     }
+
+    @PostMapping("/{studentId}")
+    public ResponseEntity<String> enrolleStudent (@PathVariable long studentId, @RequestBody long courseId){
+      service.enrollStudent(courseId,studentId);
+        return ResponseEntity.ok("Student is enrolled in course: "+ courseId);
+    }
+
+    @GetMapping ("/{studentId}")
+    public Set<Course> getEnrolledCourses (@PathVariable long studentId){
+        return service.getEnrolledCourses(studentId);
+    }
+
 
 
 }

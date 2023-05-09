@@ -14,3 +14,60 @@ BEGIN
 RETURN NEW;
 END;
 $$ ;
+-------
+
+create or replace  FUNCTION get_enrolled_students (course_id int)
+RETURNS  json
+LANGUAGE plpgsql
+As $$
+DECLARE c_id INTEGER;
+begin
+    select course_id into c_id;
+     return (select COALESCE(array_to_json(array_agg(row_to_json(t)) ),'[]'::json)
+    from (
+   select u.id,u.first_name,u.last_name,u.email,u.role,u.guid,u.created_at,u.updated_at
+     from course_student cs join users u on u.id = cs.student_id
+     where cs.course_id = c_id
+    ) t);
+end;
+$$;
+
+select get_enrolled_students(15);
+---------------
+
+create or replace  FUNCTION get_enrolled_students (course_id int)
+    RETURNS  json
+    LANGUAGE plpgsql
+As $$
+DECLARE c_id INTEGER;
+DECLARE   d json;
+begin
+    select course_id into c_id;
+    select (select COALESCE(array_to_json(array_agg(row_to_json(t)) ),'[]'::json)
+            from (
+                     select u.id,u.first_name,u.last_name,u.email,u.role,u.guid,u.created_at,u.updated_at
+                     from course_student cs join users u on u.id = cs.student_id
+                     where cs.course_id = c_id
+                 ) t) into d;
+    return d;
+end;
+$$;
+---------
+
+create or replace  FUNCTION get_enrolled_courses (student_id int)
+    RETURNS  json
+    LANGUAGE plpgsql
+As $$
+DECLARE s_id INTEGER;
+begin
+    select student_id into s_id;
+    return (select COALESCE(array_to_json(array_agg(row_to_json(t)) ),'[]'::json)
+            from (
+                     select c.id,c.title,c.credits,c.updated_at,c.created_at
+                     from course_student cs join courses c on c.id = cs.student_id
+                     where cs.student_id = s_id
+                 ) t);
+end;
+$$;
+
+insert into course_student (student_id, course_id) values (22,15)
