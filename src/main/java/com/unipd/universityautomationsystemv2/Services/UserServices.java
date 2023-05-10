@@ -24,12 +24,14 @@ import java.util.Set;
 public class UserServices {
     private final UserRepository repository;
     private final CourseRepository courseRepository;
+    private CourseServices courseServices;
 
     @Autowired
-    public UserServices(UserRepository repository, CourseRepository courseRepository) {
+    public UserServices(UserRepository repository, CourseRepository courseRepository, CourseServices cs) {
         this.repository = repository;
-
         this.courseRepository = courseRepository;
+
+        this.courseServices = cs;
     }
 
 
@@ -93,17 +95,34 @@ public class UserServices {
 
     public void enrollStudent (Long courseId, Long studentId){
        User student =  findById(studentId);
-       Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("course not exist with id :" + courseId));
+       Course course = courseServices.findById(courseId);
        if (Objects.nonNull(student) && student.getRole() == Role.STUDENT){
            repository.enrollStudent(courseId,studentId);
        }
        else throw new EntityNotFoundException ("User is not a student");
     }
 
+    public void enrollStudentLight (Long courseId, Long studentId) {
+        User student = findById(studentId);
+        Course course = courseServices.findById(courseId);
+        course.getUsersMap().add(student);
+        courseRepository.save(course);
+    }
+
+    public boolean unenrollCourse (Long studentId,Long courseId){
+        User student = findById(studentId);
+        Course course = courseServices.findById(courseId);
+        boolean removed = course.getUsersMap().remove(student);
+        courseRepository.save(course);
+        return removed;
+    }
+
+
     public Set<Course> getEnrolledCourses (Long studentId) {
         User student = findById(studentId);
         return student.getCoursesMap();
     }
+
 
 
 }

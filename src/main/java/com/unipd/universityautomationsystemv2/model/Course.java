@@ -1,5 +1,6 @@
 package com.unipd.universityautomationsystemv2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class Course extends BaseEntity{
             name = "course_student",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns  = @JoinColumn(name = "student_id"))
+    @JsonIgnore
 
     Set<User> UsersMap;
 

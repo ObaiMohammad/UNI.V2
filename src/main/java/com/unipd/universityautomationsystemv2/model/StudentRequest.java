@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class EnrollStudentRequest {
+public class StudentRequest {
     private Long courseId;
 }

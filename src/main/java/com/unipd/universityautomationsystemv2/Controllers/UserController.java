@@ -1,17 +1,14 @@
 package com.unipd.universityautomationsystemv2.Controllers;
 
 import com.github.fge.jsonpatch.JsonPatch;
-import com.unipd.universityautomationsystemv2.Exceptions.EntityNotFoundException;
 import com.unipd.universityautomationsystemv2.Services.UserServices;
 import com.unipd.universityautomationsystemv2.model.Course;
-import com.unipd.universityautomationsystemv2.model.EnrollStudentRequest;
+import com.unipd.universityautomationsystemv2.model.StudentRequest;
 import com.unipd.universityautomationsystemv2.model.User;
 import com.unipd.universityautomationsystemv2.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Set;
@@ -79,17 +76,31 @@ public class UserController {
         return ResponseEntity.ok("Deleted successfully");
     }
 
-    @PostMapping("/enrolle/{studentId}")
-    public ResponseEntity<String> enrolleStudent(@PathVariable Long studentId, @RequestBody EnrollStudentRequest request) {
+    @PostMapping("/{studentId}/enroll")
+    public ResponseEntity<String> enrolleStudent(@PathVariable Long studentId, @RequestBody StudentRequest request) {
 
            service.enrollStudent(request.getCourseId(), studentId);
 
         return ResponseEntity.ok("Student is enrolled in course: " + request.getCourseId());
     }
 
-    @GetMapping("/student/courses/{studentId}")
+    @PostMapping("/{studentId}/enroll/light")
+    public ResponseEntity<String> enrolleStudentLight(@PathVariable Long studentId, @RequestBody StudentRequest request) {
+
+        service.enrollStudentLight(request.getCourseId(), studentId);
+
+        return ResponseEntity.ok("Student is enrolled in course: " + request.getCourseId());
+    }
+
+    @GetMapping("/student/{studentId}/courses")
     public Set<Course> getEnrolledCourses(@PathVariable Long studentId) {
         return service.getEnrolledCourses(studentId);
+    }
+
+    @DeleteMapping("/{studentId}/unenroll")
+    public  ResponseEntity<String> unenrollCourse (@PathVariable Long studentId, @RequestBody StudentRequest request){
+        service.unenrollCourse(studentId,request.getCourseId());
+         return ResponseEntity.noContent().build();
     }
 
 
