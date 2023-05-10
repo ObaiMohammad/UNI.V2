@@ -1,5 +1,7 @@
 package com.unipd.universityautomationsystemv2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class User extends BaseEntity{
     private Role role;
 
     @ManyToMany(mappedBy = "UsersMap")
+    @JsonIgnore
     Set<Course> coursesMap;
 
 }

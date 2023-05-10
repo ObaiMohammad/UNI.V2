@@ -71,3 +71,6 @@ end;
 $$;
 
 insert into course_student (student_id, course_id) values (22,15)
+
+drop function get_enrolled_courses;
+drop function get_enrolled_students;

@@ -1,15 +1,18 @@
 package com.unipd.universityautomationsystemv2.Controllers;
 
 import com.github.fge.jsonpatch.JsonPatch;
+import com.unipd.universityautomationsystemv2.Exceptions.EntityNotFoundException;
 import com.unipd.universityautomationsystemv2.Services.UserServices;
 import com.unipd.universityautomationsystemv2.model.Course;
+import com.unipd.universityautomationsystemv2.model.EnrollStudentRequest;
 import com.unipd.universityautomationsystemv2.model.User;
 import com.unipd.universityautomationsystemv2.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Set;
 
@@ -25,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return service.findAll();
     }
 
@@ -35,18 +38,17 @@ public class UserController {
     }
 
     @PostMapping("/multi")
-    public User [] addMultiableUser(@RequestBody UserModel [] userModel) {
-       User [] users = new User[userModel.length];
+    public User[] addMultiableUser(@RequestBody UserModel[] userModel) {
+        User[] users = new User[userModel.length];
 //        for (UserModel u : user)
 //        {
 //          users.add(service.create(u))  ;
 //        }
-        for (int i =0; i < users.length ;i++){
-            users [i] = (service.create(userModel[i]));
+        for (int i = 0; i < users.length; i++) {
+            users[i] = (service.create(userModel[i]));
         }
-        return  users ;
+        return users;
     }
-
 
 
     @GetMapping("/{id}")
@@ -55,39 +57,40 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserModel user){
-;
-        return ResponseEntity.ok(service.updateOne(id,user));
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserModel user) {
+        ;
+        return ResponseEntity.ok(service.updateOne(id, user));
     }
 
-    @PatchMapping ("/{id}")
-    public ResponseEntity<User> updateUser (@PathVariable long id, @RequestBody JsonPatch patch){
-        return ResponseEntity.ok(service.patchOne(id,patch));
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody JsonPatch patch) {
+        return ResponseEntity.ok(service.patchOne(id, patch));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.ok("Deleted successfully");
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteAllUsers(){
+    public ResponseEntity<String> deleteAllUsers() {
         service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
     }
 
-    @PostMapping("/{studentId}")
-    public ResponseEntity<String> enrolleStudent (@PathVariable long studentId, @RequestBody long courseId){
-      service.enrollStudent(courseId,studentId);
-        return ResponseEntity.ok("Student is enrolled in course: "+ courseId);
+    @PostMapping("/enrolle/{studentId}")
+    public ResponseEntity<String> enrolleStudent(@PathVariable Long studentId, @RequestBody EnrollStudentRequest request) {
+
+           service.enrollStudent(request.getCourseId(), studentId);
+
+        return ResponseEntity.ok("Student is enrolled in course: " + request.getCourseId());
     }
 
-    @GetMapping ("/{studentId}")
-    public Set<Course> getEnrolledCourses (@PathVariable long studentId){
+    @GetMapping("/student/courses/{studentId}")
+    public Set<Course> getEnrolledCourses(@PathVariable Long studentId) {
         return service.getEnrolledCourses(studentId);
     }
-
 
 
 }

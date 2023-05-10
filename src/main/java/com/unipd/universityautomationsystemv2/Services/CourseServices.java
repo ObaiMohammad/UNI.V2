@@ -35,8 +35,7 @@ public class CourseServices {
     }
 
     public Course findById(long id) {
-        Course course =  repository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not exist with id :" + id));
-        return course;
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not exist with id :" + id));
     }
 
     public List<Course> findAll(){
@@ -56,9 +55,7 @@ public class CourseServices {
             JsonNode patched = patch.apply(courseJson);
             course = objectMapper.treeToValue(patched,Course.class);
             return course;
-        } catch (JsonPatchException e) {
-            throw new RuntimeException(e);
-        } catch (JsonProcessingException e) {
+        } catch (JsonPatchException | JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
@@ -77,6 +74,8 @@ public class CourseServices {
         Course course = findById(courseId);
         return course.getUsersMap();
     }
+
+
 
 
 }

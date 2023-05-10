@@ -1,6 +1,7 @@
 package com.unipd.universityautomationsystemv2.Services;
 
 import com.unipd.universityautomationsystemv2.Exceptions.EntityNotFoundException;
+import com.unipd.universityautomationsystemv2.Repositories.CourseRepository;
 import com.unipd.universityautomationsystemv2.Repositories.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,15 +17,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
 public class UserServices {
     private final UserRepository repository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public UserServices(UserRepository repository) {
+    public UserServices(UserRepository repository, CourseRepository courseRepository) {
         this.repository = repository;
+
+        this.courseRepository = courseRepository;
     }
 
 
@@ -88,7 +93,8 @@ public class UserServices {
 
     public void enrollStudent (Long courseId, Long studentId){
        User student =  findById(studentId);
-       if (student.getRole() == Role.STUDENT){
+       Course course = courseRepository.findById(courseId).orElseThrow(() -> new EntityNotFoundException("course not exist with id :" + courseId));
+       if (Objects.nonNull(student) && student.getRole() == Role.STUDENT){
            repository.enrollStudent(courseId,studentId);
        }
        else throw new EntityNotFoundException ("User is not a student");
