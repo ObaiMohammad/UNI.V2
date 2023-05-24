@@ -109,7 +109,7 @@ public class UserServices {
         courseRepository.save(course);
     }
 
-    public boolean unenrollCourse (Long studentId,Long courseId){
+    public boolean unrollCourse (Long studentId,Long courseId){
         User student = findById(studentId);
         Course course = courseServices.findById(courseId);
         boolean removed = course.getUsersMap().remove(student);

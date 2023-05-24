@@ -92,14 +92,14 @@ public class UserController {
         return ResponseEntity.ok("Student is enrolled in course: " + request.getCourseId());
     }
 
-    @GetMapping("/student/{studentId}/courses")
+    @GetMapping("{studentId}/courses")
     public Set<Course> getEnrolledCourses(@PathVariable Long studentId) {
         return service.getEnrolledCourses(studentId);
     }
 
-    @DeleteMapping("/{studentId}/unenroll")
-    public  ResponseEntity<String> unenrollCourse (@PathVariable Long studentId, @RequestBody StudentRequest request){
-        service.unenrollCourse(studentId,request.getCourseId());
+    @DeleteMapping("/{studentId}/unroll")
+    public  ResponseEntity<String> unrollCourse (@PathVariable Long studentId, @RequestBody StudentRequest request){
+        service.unrollCourse(studentId,request.getCourseId());
          return ResponseEntity.noContent().build();
     }
 

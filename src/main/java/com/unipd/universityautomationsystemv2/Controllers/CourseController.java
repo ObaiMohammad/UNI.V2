@@ -1,16 +1,18 @@
 package com.unipd.universityautomationsystemv2.Controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.unipd.universityautomationsystemv2.Services.CourseServices;
-import com.unipd.universityautomationsystemv2.Services.UserServices;
 import com.unipd.universityautomationsystemv2.model.Course;
 import com.unipd.universityautomationsystemv2.model.CourseModel;
 import com.unipd.universityautomationsystemv2.model.User;
-import com.unipd.universityautomationsystemv2.model.UserModel;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Set;
 
@@ -66,9 +68,17 @@ public class CourseController {
         service.deleteAll();
         return ResponseEntity.ok("Deleted successfully");
     }
-    @GetMapping ("/{courseId}")
+    @GetMapping ("/{courseId}.students")
     public Set<User> getEnrolledCourses (@PathVariable long courseId){
         return service.getEnrolledStudents(courseId);
     }
+
+//    @GetMapping ("/{courseId}/students/light")
+//    public ResultSet getEnrolledStudentsLight (@PathVariable int courseId ){
+//        ResultSet rs = service.getEnrolledStudentsLight(courseId);
+//        rs.
+//        return   service.getEnrolledStudentsLight(courseId);
+//
+//    }
 
 }

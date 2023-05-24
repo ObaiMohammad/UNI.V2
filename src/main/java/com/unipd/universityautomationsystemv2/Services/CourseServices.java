@@ -10,9 +10,11 @@ import com.unipd.universityautomationsystemv2.Repositories.CourseRepository;
 import com.unipd.universityautomationsystemv2.model.Course;
 import com.unipd.universityautomationsystemv2.model.CourseModel;
 import com.unipd.universityautomationsystemv2.model.User;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Set;
 
@@ -75,6 +77,10 @@ public class CourseServices {
         return course.getUsersMap();
     }
 
+    public ResultSet getEnrolledStudentsLight(int id){
+        return  repository.getStudents(id);
+
+    }
 
 
 
