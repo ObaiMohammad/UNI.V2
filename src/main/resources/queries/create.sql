@@ -65,3 +65,6 @@ CREATE TABLE course_student
     constraint fk_unique unique (student_id,course_id)
 );
 -----------------
+
+select * from courses;
+delete from courses;

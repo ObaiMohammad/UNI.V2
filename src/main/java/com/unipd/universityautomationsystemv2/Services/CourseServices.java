@@ -7,6 +7,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.unipd.universityautomationsystemv2.Exceptions.EntityNotFoundException;
 import com.unipd.universityautomationsystemv2.Repositories.CourseRepository;
+import com.unipd.universityautomationsystemv2.Repositories.CourseRepositoryTest;
 import com.unipd.universityautomationsystemv2.model.Course;
 import com.unipd.universityautomationsystemv2.model.CourseModel;
 import com.unipd.universityautomationsystemv2.model.User;
@@ -21,10 +22,10 @@ import java.util.Set;
 @Service
 public class CourseServices {
 
-    private final CourseRepository repository;
+    private final CourseRepositoryTest repository;
 
     @Autowired
-    public CourseServices(CourseRepository repository) {
+    public CourseServices(CourseRepositoryTest repository) {
         this.repository = repository;
     }
 
@@ -37,7 +38,7 @@ public class CourseServices {
     }
 
     public Course findById(long id) {
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("course not exist with id :" + id));
+        return repository.findById(id);
     }
 
     public List<Course> findAll(){

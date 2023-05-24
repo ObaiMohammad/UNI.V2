@@ -61,7 +61,7 @@ As $$
 DECLARE s_id INTEGER;
 begin
     select student_id into s_id;
-    return (select COALESCE(array_to_json(array_agg(row_to_json(t)) ),'[]'::json)
+    return (select COALESCE(array_to_json(array_agg(row_to_json(t))),'[]'::json)
             from (
                      select c.id,c.title,c.credits,c.updated_at,c.created_at
                      from course_student cs join courses c on c.id = cs.course_id
@@ -86,13 +86,21 @@ language plpgsql
 as $$
     DECLARE c_id int;
     begin
+        select course_id into c_id;
+        return (select COALESCE(array_to_json (array_agg(row_to_json(t))),'[]'::json)
+            from (
+                    select u.id,u.first_name,u.last_name,u.email,u.guid,u.role,u.created_at,u.updated_at
+                    from course_student cs join users u on u.id = cs.student_id
+                    where cs.course_id = c_id)t);
 
     end;
     $$;
 
 select json_agg(row_to_json(t))
+
 from (select u.id,u.first_name,u.last_name,u.email,u.guid,u.role,u.created_at,u.updated_at
 from course_student
     join users u on u.id = course_student.student_id
 where course_id = 14)t;
 
+select get_students (14);
