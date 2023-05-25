@@ -78,10 +78,10 @@ public class CourseServices {
         return course.getUsersMap();
     }
 
-    public ResultSet getEnrolledStudentsLight(int id){
-        return  repository.getStudents(id);
-
-    }
+//    public ResultSet getEnrolledStudentsLight(int id){
+//        return  repository.getStudents(id);
+//
+//    }
 
 
 

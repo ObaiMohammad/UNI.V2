@@ -3,10 +3,10 @@ package com.unipd.universityautomationsystemv2.Repositories;
 import com.unipd.universityautomationsystemv2.Exceptions.EntityNotFoundException;
 import com.unipd.universityautomationsystemv2.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 
 public class CourseRepositoryTest {
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     public List<Course> findAll(){
@@ -47,9 +47,9 @@ public class CourseRepositoryTest {
 
     }
 
-    public void getStudents (Long courseId){
-        Query q = entityManager.createQuery("select get_students (:course_id)");
-        q.setParameter("course_id",courseId );
-        q.
-    }
+//    public void getStudents (Long courseId){
+//        Query q = entityManager.createQuery("select get_students (:course_id)");
+//        q.setParameter("course_id",courseId );
+//        q.
+//    }
 }
